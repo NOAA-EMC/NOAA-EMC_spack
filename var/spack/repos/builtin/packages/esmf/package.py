@@ -1,4 +1,4 @@
-# Copyright 2013-2018 Lawrence Livermore National Security, LLC and other
+# Copyright 2013-2019 Lawrence Livermore National Security, LLC and other
 # Spack Project Developers. See the top-level COPYRIGHT file for details.
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
@@ -15,9 +15,13 @@ class Esmf(MakefilePackage):
     and utilities for developing individual models."""
 
     homepage = "https://www.earthsystemcog.org/projects/esmf/"
-    url      = "http://www.earthsystemmodeling.org/esmf_releases/non_public/ESMF_7_0_1/esmf_7_0_1_src.tar.gz"
+#   url      = "http://www.earthsystemmodeling.org/esmf_releases/non_public/ESMF_7_0_1/esmf_7_0_1_src.tar.gz"
+#   url      = "file:///discover/nobackup/mapotts1/esmf-7.0.1m.tar.gz"
+    url      = "http://www.earthsystemmodeling.org/esmf_releases/public/ESMF_7_1_0r/esmf_7_1_0r_src.tar.gz"
 
+    version('7.1.0r', '9e455bc36a0aaa9b87e0bdedc78a47f5')
     version('7.0.1', 'd3316ea79b032b8fb0cd40e5868a0261')
+    version('7.0.1m', '9c7034ec77fd143384691e6591a4c5cc')
 
     variant('mpi',     default=True,  description='Build with MPI support')
     variant('lapack',  default=True,  description='Build with LAPACK support')
@@ -42,27 +46,30 @@ class Esmf(MakefilePackage):
     # Testing dependencies
     depends_on('perl', type='test')
 
+    # Make esmf build with newer intel versions
+    patch('intel.patch', when='@:7.0.99 %intel@17:')
     # Make esmf build with newer gcc versions
     # https://sourceforge.net/p/esmf/esmf/ci/3706bf758012daebadef83d6575c477aeff9c89b/
-    patch('gcc.patch', when='@:7.0.99 %gcc@6:')
+#   patch('gcc.patch', when='@:7.0.99 %gcc@6:')
 
     # Fix undefined reference errors with mvapich2
     # https://sourceforge.net/p/esmf/esmf/ci/34de0ccf556ba75d35c9687dae5d9f666a1b2a18/
-    patch('mvapich2.patch', when='@:7.0.99')
+#   patch('mvapich2.patch', when='@:7.0.99')
 
     # Allow different directories for creation and
     # installation of dynamic libraries on OSX:
-    patch('darwin_dylib_install_name.patch', when='platform=darwin')
+#   patch('darwin_dylib_install_name.patch', when='platform=darwin')
 
     # Make script from mvapich2.patch executable
-    @run_before('build')
-    @when('@:7.0.99')
-    def chmod_scripts(self):
-        chmod = which('chmod')
-        chmod('+x', 'scripts/libs.mvapich2f90')
+#   @run_before('build')
+#   @when('@:7.0.99')
+#   def chmod_scripts(self):
+#       return
+#       chmod = which('chmod')
+#       chmod('+x', 'scripts/libs.mvapich2f90')
 
     def url_for_version(self, version):
-        return "http://www.earthsystemmodeling.org/esmf_releases/non_public/ESMF_{0}/esmf_{0}_src.tar.gz".format(version.underscored)
+        return "http://www.earthsystemmodeling.org/esmf_releases/public/ESMF_{0}/esmf_{0}_src.tar.gz".format(version.underscored)
 
     def edit(self, spec, prefix):
         # Installation instructions can be found at:
@@ -91,6 +98,19 @@ class Esmf(MakefilePackage):
         os.environ['ESMF_INSTALL_LIBDIR'] = 'lib'
         os.environ['ESMF_INSTALL_MODDIR'] = 'include'
 
+        # Allow compiler flags to carry through from compiler spec
+        os.environ['ESMF_CXXCOMPILEOPTS'] = \
+            ' '.join(spec.compiler_flags['cxxflags'])
+        os.environ['ESMF_F90COMPILEOPTS'] = \
+            ' '.join(spec.compiler_flags['fflags'])
+        # ESMF will simply not build with Intel using backing GCC 8, in that
+        # case you need to point to something older, below is commented but is
+        # an example
+        # os.environ['ESMF_CXXCOMPILEOPTS'] = \
+        #     '-O2 -std=c++11 -gcc-name=/usr/bin/gcc'
+        # os.environ['ESMF_F90COMPILEOPTS'] = \
+        #     '-O2 -gcc-name=/usr/bin/gcc'
+
         ############
         # Compiler #
         ############
@@ -114,6 +134,7 @@ class Esmf(MakefilePackage):
 
         if '+mpi' in spec:
             os.environ['ESMF_CXX'] = spec['mpi'].mpicxx
+#           os.environ['ESMF_CXX'] = os.environ['MPI_CXX']
             os.environ['ESMF_F90'] = spec['mpi'].mpifc
         else:
             os.environ['ESMF_CXX'] = os.environ['CXX']
@@ -153,6 +174,9 @@ class Esmf(MakefilePackage):
             # Force use of the single-processor MPI-bypass library.
             os.environ['ESMF_COMM'] = 'mpiuni'
 
+        os.environ['ESMF_COMPILER'] = 'intel'
+        os.environ['ESMF_COMM'] = 'intelmpi'
+#       os.environ['ESMF_COMM'] = 'mvapich2'
         ##########
         # LAPACK #
         ##########
@@ -161,7 +185,8 @@ class Esmf(MakefilePackage):
             # A system-dependent external LAPACK/BLAS installation is used
             # to satisfy the external dependencies of the LAPACK-dependent
             # ESMF code.
-            os.environ['ESMF_LAPACK'] = 'system'
+#           os.environ['ESMF_LAPACK'] = 'system'
+            os.environ['ESMF_LAPACK'] = 'internal'
 
             # FIXME: determine whether or not we need to set this
             # Specifies the path where the LAPACK library is located.
@@ -172,7 +197,7 @@ class Esmf(MakefilePackage):
             os.environ['ESMF_LAPACK_LIBS'] = spec['lapack'].libs.link_flags  # noqa
         else:
             # Disables LAPACK-dependent code.
-            os.environ['ESMF_LAPACK'] = 'OFF'
+            os.environ['ESMF_LAPACK'] = 'internal'
 
         ##########
         # NetCDF #

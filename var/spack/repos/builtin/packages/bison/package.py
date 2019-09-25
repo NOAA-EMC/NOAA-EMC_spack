@@ -1,4 +1,4 @@
-# Copyright 2013-2018 Lawrence Livermore National Security, LLC and other
+# Copyright 2013-2019 Lawrence Livermore National Security, LLC and other
 # Spack Project Developers. See the top-level COPYRIGHT file for details.
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
@@ -22,8 +22,9 @@ class Bison(AutotoolsPackage):
 
     depends_on('diffutils', type='build')
     depends_on('m4', type=('build', 'run'))
-    depends_on('perl', type='build')
-    depends_on('help2man', type='build')
+#   depends_on('perl', type='build')
+#   depends_on('perl')
+#   depends_on('help2man', type='build')
 
     patch('pgi.patch', when='@3.0.4')
 

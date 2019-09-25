@@ -1,0 +1,28 @@
+--- a/configure	2019-01-30 12:49:38.733746070 -0500
++++ b/configure.mod	2019-01-30 12:57:39.335518201 -0500
+@@ -20776,16 +20776,6 @@
+ // If the compiler admits that it is not ready for C++11, why torture it?
+ // Hopefully, this will speed up the test.
+ 
+-#ifndef __cplusplus
+-
+-#error "This is not a C++ compiler"
+-
+-#elif __cplusplus < 201103L
+-
+-#error "This is not a C++11 compiler"
+-
+-#else
+-
+ namespace cxx11
+ {
+ 
+@@ -21053,8 +21043,6 @@
+ 
+ }  // namespace cxx11
+ 
+-#endif  // __cplusplus >= 201103L
+-
+ 
+ 
+ _ACEOF
