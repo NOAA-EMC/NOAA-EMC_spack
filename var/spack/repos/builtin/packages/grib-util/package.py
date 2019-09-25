@@ -28,11 +28,11 @@ class GribUtil(CMakePackage):
 
     # FIXME: Add a proper url for your package's homepage here.
     homepage = "http://www.example.com"
-    git      = "gerrit:NCEPLIBS-grib_util"
+    git      = "git@github.com:NOAA-EMC/NCEPLIBS-grib_util.git"
 
     # FIXME: Add proper versions and checksums here.
     # version('1.2.3', '0123456789abcdef0123456789abcdef')
-    version('v1.1.1', branch='spack-build')
+    version('v1.1.1', branch='spack-build',submodules=True)
 
     # FIXME: Add dependencies if required.
     depends_on('lapack')

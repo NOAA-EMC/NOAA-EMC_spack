@@ -28,7 +28,7 @@ class ProdUtil(CMakePackage):
 
     # FIXME: Add a proper url for your package's homepage here.
     homepage = "http://www.example.com"
-    git      = "gerrit:NCEPLIBS-prod_util"
+    git      = "git@github.com:NOAA-EMC/NCEPLIBS-prod_util.git"
 
     # FIXME: Add proper versions and checksums here.
     version('1.0.18', branch='spack-build')

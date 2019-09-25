@@ -28,7 +28,7 @@ class W3nco(CMakePackage):
 
     # FIXME: Add a proper url for your package's homepage here.
     homepage = "http://www.example.com"
-    git      = "gerrit:NCEPLIBS-w3nco"
+    git      = "git@github.com:NOAA-EMC/NCEPLIBS-w3nco.git"
 
     # FIXME: Add proper versions and checksums here.
     # version('1.2.3', '0123456789abcdef0123456789abcdef')

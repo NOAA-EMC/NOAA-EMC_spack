@@ -28,11 +28,11 @@ class Bufr(CMakePackage):
 
     # FIXME: Add a proper url for your package's homepage here.
     homepage = "http://www.example.com"
-    git      = "gerrit:NCEPLIBS-bufr"
+    git      = "git@github.com:NOAA-EMC/NCEPLIBS-bufr.git"
 
     # FIXME: Add proper versions and checksums here.
     # version('1.2.3', '0123456789abcdef0123456789abcdef')
-    version('v11.2.0',  branch='spack-build')
+    version('v11.3.0',  branch='spack-build')
 
     # FIXME: Add dependencies if required.
     # depends_on('foo')
