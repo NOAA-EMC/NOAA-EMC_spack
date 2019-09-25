@@ -1,4 +1,4 @@
-# Copyright 2013-2018 Lawrence Livermore National Security, LLC and other
+# Copyright 2013-2019 Lawrence Livermore National Security, LLC and other
 # Spack Project Developers. See the top-level COPYRIGHT file for details.
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
@@ -29,6 +29,11 @@ class Tmux(AutotoolsPackage):
 
     depends_on('libevent')
     depends_on('ncurses')
+
+    def flag_handler(self, name, flags):
+        if name == 'cppflags':
+            flags.append(self.spec['ncurses'].headers.include_flags)
+        return (None, flags, None)
 
     def configure_args(self):
         return ['LIBTINFO_LIBS=-lncurses']

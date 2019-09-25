@@ -1,4 +1,4 @@
-# Copyright 2013-2018 Lawrence Livermore National Security, LLC and other
+# Copyright 2013-2019 Lawrence Livermore National Security, LLC and other
 # Spack Project Developers. See the top-level COPYRIGHT file for details.
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
@@ -15,9 +15,11 @@ class Esmf(MakefilePackage):
     and utilities for developing individual models."""
 
     homepage = "https://www.earthsystemcog.org/projects/esmf/"
-    url      = "http://www.earthsystemmodeling.org/esmf_releases/non_public/ESMF_7_0_1/esmf_7_0_1_src.tar.gz"
+#   url      = "http://www.earthsystemmodeling.org/esmf_releases/non_public/ESMF_7_0_1/esmf_7_0_1_src.tar.gz"
 #   url      = "file:///discover/nobackup/mapotts1/esmf-7.0.1m.tar.gz"
+    url      = "http://www.earthsystemmodeling.org/esmf_releases/public/ESMF_7_1_0r/esmf_7_1_0r_src.tar.gz"
 
+    version('7.1.0r', '9e455bc36a0aaa9b87e0bdedc78a47f5')
     version('7.0.1', 'd3316ea79b032b8fb0cd40e5868a0261')
     version('7.0.1m', '9c7034ec77fd143384691e6591a4c5cc')
 
@@ -44,6 +46,8 @@ class Esmf(MakefilePackage):
     # Testing dependencies
     depends_on('perl', type='test')
 
+    # Make esmf build with newer intel versions
+    patch('intel.patch', when='@:7.0.99 %intel@17:')
     # Make esmf build with newer gcc versions
     # https://sourceforge.net/p/esmf/esmf/ci/3706bf758012daebadef83d6575c477aeff9c89b/
 #   patch('gcc.patch', when='@:7.0.99 %gcc@6:')
@@ -65,7 +69,7 @@ class Esmf(MakefilePackage):
 #       chmod('+x', 'scripts/libs.mvapich2f90')
 
     def url_for_version(self, version):
-        return "http://www.earthsystemmodeling.org/esmf_releases/non_public/ESMF_{0}/esmf_{0}_src.tar.gz".format(version.underscored)
+        return "http://www.earthsystemmodeling.org/esmf_releases/public/ESMF_{0}/esmf_{0}_src.tar.gz".format(version.underscored)
 
     def edit(self, spec, prefix):
         # Installation instructions can be found at:
@@ -93,6 +97,19 @@ class Esmf(MakefilePackage):
         os.environ['ESMF_INSTALL_BINDIR'] = 'bin'
         os.environ['ESMF_INSTALL_LIBDIR'] = 'lib'
         os.environ['ESMF_INSTALL_MODDIR'] = 'include'
+
+        # Allow compiler flags to carry through from compiler spec
+        os.environ['ESMF_CXXCOMPILEOPTS'] = \
+            ' '.join(spec.compiler_flags['cxxflags'])
+        os.environ['ESMF_F90COMPILEOPTS'] = \
+            ' '.join(spec.compiler_flags['fflags'])
+        # ESMF will simply not build with Intel using backing GCC 8, in that
+        # case you need to point to something older, below is commented but is
+        # an example
+        # os.environ['ESMF_CXXCOMPILEOPTS'] = \
+        #     '-O2 -std=c++11 -gcc-name=/usr/bin/gcc'
+        # os.environ['ESMF_F90COMPILEOPTS'] = \
+        #     '-O2 -gcc-name=/usr/bin/gcc'
 
         ############
         # Compiler #
