@@ -31,7 +31,7 @@ class ProdUtil(CMakePackage):
     git      = "git@github.com:NOAA-EMC/NCEPLIBS-prod_util.git"
 
     # FIXME: Add proper versions and checksums here.
-    version('1.0.18', branch='spack-build')
+    version('1.0.18', branch='spack-build',submodules=True)
 
     # FIXME: Add dependencies if required.
     depends_on('w3nco')

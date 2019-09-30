@@ -35,7 +35,7 @@ class Nemsfv3gfs(CMakePackage):
 
     # FIXME: Add dependencies if required.
     depends_on('hdf5+cxx+fortran+hl+mpi')
-    depends_on('cmake@3.12.3')
+#   depends_on('cmake@3.12.3')
     depends_on('netcdf')
     depends_on('netcdf-fortran')
     depends_on('bacio')

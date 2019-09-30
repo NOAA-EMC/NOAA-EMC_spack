@@ -36,7 +36,7 @@ class Post(CMakePackage):
 
     # FIXME: Add dependencies if required.
     depends_on('hdf5+cxx+fortran+hl+mpi')
-    depends_on('cmake@3.13.1')
+#   depends_on('cmake@3.13.1')
     depends_on('netcdf')
     depends_on('netcdf-fortran')
     depends_on('jasper')
