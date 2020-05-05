@@ -32,7 +32,7 @@ class Sfcio(CMakePackage):
 
     # FIXME: Add proper versions and checksums here.
     # version('1.2.3', '0123456789abcdef0123456789abcdef')
-    version('v1.1.0',  branch='spack-build')
+    version('v1.1.0',  branch='release/public-v1')
 
     # FIXME: Add dependencies if required.
     # depends_on('foo')

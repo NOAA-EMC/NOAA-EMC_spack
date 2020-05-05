@@ -32,7 +32,7 @@ class Nemsio(CMakePackage):
 
     # FIXME: Add proper versions and checksums here.
     # version('1.2.3', '0123456789abcdef0123456789abcdef')
-    version('v2.2.3',  branch='spack-build')
+    version('v2.2.3',  branch='release/public-v1')
 
     # FIXME: Add dependencies if required.
     depends_on('mpi')

@@ -31,7 +31,7 @@ class G2c(CMakePackage):
     git      = "git@github.com:NOAA-EMC/NCEPLIBS-g2c.git"
 
     # FIXME: Add proper versions and checksums here.
-    version('1.6.0', branch='spack-build')
+    version('1.6.0', branch='release/public-v1')
 
     # FIXME: Add dependencies if required.
     # depends_on('foo')

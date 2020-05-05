@@ -32,7 +32,7 @@ class GribUtil(CMakePackage):
 
     # FIXME: Add proper versions and checksums here.
     # version('1.2.3', '0123456789abcdef0123456789abcdef')
-    version('v1.1.1', branch='spack-build',submodules=True)
+    version('v1.1.1', branch='release/public-v1',submodules=True)
 
     # FIXME: Add dependencies if required.
     depends_on('lapack')

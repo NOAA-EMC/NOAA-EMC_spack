@@ -31,7 +31,7 @@ class Ip(CMakePackage):
     git      = "git@github.com:NOAA-EMC/NCEPLIBS-ip.git"
 
     # FIXME: Add proper versions and checksums here.
-    version('v3.0.0', branch='spack-build')
+    version('v3.0.0', branch='release/public-v1')
 
     # FIXME: Add dependencies if required.
     # depends_on('foo')

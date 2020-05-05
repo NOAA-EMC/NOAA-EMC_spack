@@ -31,7 +31,7 @@ class G2(CMakePackage):
     git      = "git@github.com:NOAA-EMC/NCEPLIBS-g2.git"
 
     # FIXME: Add proper versions and checksums here.
-    version('v3.1.0', branch='spack-build')
+    version('v3.1.0', branch='release/public-v1')
 
     # FIXME: Add dependencies if required.
     depends_on('jasper')

@@ -31,7 +31,7 @@ class Nemsiogfs(CMakePackage):
     git      = "git@github.com:NOAA-EMC/NCEPLIBS-nemsiogfs.git"
 
     # FIXME: Add proper versions and checksums here.
-    version('2.2.1', branch='spack-build',submodules=True)
+    version('2.2.1', branch='release/public-v1',submodules=True)
 
     # FIXME: Add dependencies if required.
     depends_on('nemsio')

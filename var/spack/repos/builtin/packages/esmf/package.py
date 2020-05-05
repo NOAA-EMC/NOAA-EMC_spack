@@ -47,7 +47,7 @@ class Esmf(MakefilePackage):
     depends_on('perl', type='test')
 
     # Make esmf build with newer intel versions
-    patch('intel.patch', when='@:7.0.99 %intel@17:')
+#   patch('intel.patch', when='@:7.0.99 %intel@17:')
     # Make esmf build with newer gcc versions
     # https://sourceforge.net/p/esmf/esmf/ci/3706bf758012daebadef83d6575c477aeff9c89b/
 #   patch('gcc.patch', when='@:7.0.99 %gcc@6:')
